@@ -1,0 +1,754 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Powershell Cheat Sheet</title>
+    <style>
+        html
+        {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        h1
+        {
+            color: #FFFFFF;
+            background-color: #555555;
+
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+
+            margin-left:   0.0em;
+            margin-right:  0.0em;
+            margin-top:    0.0em;
+            margin-bottom: 1.0em;
+
+            font-size: 2.0em;
+        }
+        
+        h2
+        {
+            color: #FFFFFF;
+            background-color: #555555;
+
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+
+            margin-left:   0.0em;
+            margin-right:  0.0em;
+            margin-top:    0.0em;
+            margin-bottom: 0.5em;
+
+            font-size: 1.5em;
+        }
+
+        h3
+        {
+            color: #FFFFFF;
+            background-color: #555555;
+
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+
+            margin-left:   0.0em;
+            margin-right:  0.0em;
+            margin-top:    0.0em;
+            margin-bottom: 0.5em;
+
+            font-size: 1.0em;
+        }
+
+        p
+        {
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+            
+            margin-left:   0.0em;
+            margin-right:  0.0em;
+            margin-top:    0.0em;
+            margin-bottom: 0.5em;
+
+            font-size: 0.8em;
+        }
+
+        pre
+        {
+            background-color: #FAFAFA;
+            border: 1px solid #A7D7F7;
+
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+
+            margin-left:   0.0em;
+            margin-right:  0.0em;
+            margin-top:    0.0em;
+            margin-bottom: 0.5em;
+
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.8em;
+        }
+        
+        code
+        {
+            font-family: Consolas, "Courier New", monospace;
+            /*font-size: 0.8em;*/
+        }
+
+        table
+        {
+            border-collapse: collapse;
+        }
+
+        th
+        {
+            border: 1px solid #D4D4D4;
+
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        td
+        {
+            border: 1px solid #D4D4D4;
+
+            padding-left:   0.2em;
+            padding-right:  0.2em;
+            padding-top:    0.2em;
+            padding-bottom: 0.2em;
+
+            font-size: 0.8em;
+        }
+
+        div.flex-container
+        {
+            display: flex;
+            width: 100%;
+        }
+
+        div.flex-item-left
+        {
+            /*
+            background: #A0FFA0;
+            */
+
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 33%;
+        }
+
+        div.flex-item-middle
+        {
+            /*
+            background: #FFA0A0;
+            */
+
+            margin-left:   0.5em;
+            margin-right:  0.5em;
+
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 33%;
+        }
+
+        div.flex-item-right
+        {
+            /*
+            background: #A0A0FF;
+            */
+
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 33%;
+        }
+    </style>
+</head>
+<body>
+
+
+<h1>Powershell Cheat Sheet</h1>
+
+<div class="flex-container">
+
+<div class="flex-item-left">
+
+<h2>General</h2>
+<h3>Commands</h3>
+
+<p>Command names following <code>&lt;Verb&gt;-&lt;Noun&gt;</code> pattern.</p>
+<p>Show available commands.</p>
+<pre>
+Get-Command
+Get-Command –Name *IP*
+Get-Command –Module NetTCPIP –Name *IP*
+</pre>
+
+<p>Command names are case-insensitive.</p>
+<pre>
+Set-Location C:\Temp
+set-location C:\Temp
+</pre>
+
+<h3>Aliases</h3>
+<p>Show active command pseudonyms.</p>
+<pre>
+Alias
+...
+Alias  cd   -> Set-Location
+Alias  cls  -> Clear-Host
+Alias  copy -> Copy-Item
+Alias  del  -> Remove-Item
+Alias  dir  -> Get-ChildItem
+Alias  echo -> Write-Output
+...
+</pre>
+
+<h3>Help</h3>
+<p>Show online help for command.</p>
+<pre>
+Get-Help Get-Process
+Get-Help Get-Process -detailed
+Get-Help Get-Process -full
+</pre>
+
+<h3>User Settings</h3>
+<p>The variable &quot;$profile&quot; contains the path(s) of the active profile file(s).</p>
+<pre>
+$profile | fl * -Force
+C:\Windows\...\profile.ps1
+C:\Users\...\profile.ps1
+...
+</pre>
+
+<p>Directly access one of the specific properties.</p>
+<pre>
+$profile.CurrentUserCurrentHost
+</pre>
+
+<p>Get the content of the profile files.</p>
+<pre>
+Get-Content $profile
+...
+set-alias cd   set-location
+set-alias cls  clear-host
+set-alias copy copy-item
+set-alias del  remove-item
+set-alias dir  get-childitem
+set-alias echo write-output
+...
+</pre>
+
+<p>Reload the profile into the current session.</p>
+<pre>
+.$profile
+</pre>
+
+
+
+<h3>Pipeline</h3>
+
+<p>The output of a command becomes the input of the next command.</p>
+<pre>
+Get-ChildItem | Sort length | Select fullname, length
+</pre>
+
+<p>
+The special variable &quot;$_&quot; represents the current pipeline object.
+</p>
+
+<pre>
+Get-Process | Where-Object {$_.Name –eq 'iexplore'}
+</pre>
+
+</div>
+
+
+<!-- -->
+
+
+<div class="flex-item-middle">
+
+
+<h2>Objects</h2>
+
+<p>Powershell works consistently with objects. Syntax <code>&lt;Object&gt;.&lt;Property&gt;</code></p>
+
+<pre>
+$a = Get-Item c:\sample.txt
+$a.length
+$a.fullname.ToUpper()
+</pre>
+
+<p>Show all properties and methods of object.</p>
+<pre>
+$myvar | Get-Member
+</pre>
+
+
+<h2>Control Flow</h2>
+
+
+<h3>If</h3>
+
+<pre>
+If ($this -eq $that)
+{
+  # commands
+}
+ElseIf ($we -ne $them)
+{
+  # commands
+}
+Else
+{
+  # commands
+}
+</pre>
+
+
+<h3>For</h3>
+
+<pre>
+For($i=0; $i -lt 10; $i++)
+{
+    Write-Host $i
+}
+</pre>
+
+
+<h3>ForEach</h3>
+
+<pre>
+$files = get-childitem -filter *.bmp
+ForEach ($file in $files)
+{
+    Write-Host $file.name
+}
+</pre>
+
+
+<h3>While</h3>
+
+<pre>
+While ($val -lt 10)
+{
+    $val++
+    Write-Host $val
+}
+</pre>
+
+
+<h3>Do-While</h3>
+
+<pre>
+Do
+{
+  $val++
+  Write-Host $val
+}
+While( $val -lt 10 )
+</pre>
+
+
+<h3>Do-Until</h3>
+
+<pre>
+Do
+{
+  $val++
+  Write-Host $val
+}
+Until( $val -gt 10 )
+</pre>
+
+
+<h3>Loop Control</h3>
+
+<pre>
+# exit program loop immediately
+Break
+
+# skip this iteration of the loop
+Continue
+</pre>
+
+
+<h3>Functions</h3>
+
+<p>Unnamed arguments.</p>
+<pre>
+function Write-Error
+{
+    Write-Host $args[0] $args[1] -foregroundcolor red
+}
+</pre>
+
+<p>Named arguments with default values.</p>
+<pre>
+function Write-Info($source="UNKNOWN", $message="" )
+{
+    Write-Host $source $message -foregroundcolor yellow
+}
+</pre>
+
+<p>Advanced arguments.</p>
+<pre>
+function Write-Message
+{
+    Param
+    (
+         [Parameter(Mandatory=$true, Position=0)]
+         [string] $source,
+         [Parameter(Mandatory=$true, Position=1)]
+         [string] $message
+    )
+
+    Write-Host $source $message -foregroundcolor green
+}
+</pre>
+
+<p>Call function, pass arguments separated by spaces.</p>
+<pre>
+Write-Error "NET" "Host Unknown"
+
+Write-Info  "NET" "Received"
+Write-Info -message "Canceled"
+
+Write-Message "NET" "Socket closed"
+Write-Message -message "Socket closed" -source "NET"
+</pre>
+
+
+<h2>Error Handling</h2>
+
+<h3>Suppress Output</h3>
+
+<p>Discarding unnecessary output.</p>
+
+<pre>
+New-Item -path .\test.txt -itemType File | Out-Null
+
+# faster way
+New-Item -path .\test.txt -itemType File > $null
+$null = New-Item -path .\test.txt -itemType File
+
+[void] (New-Item -path .\test.txt -itemType File)
+</pre>
+
+
+<h3>Common parameters</h3>
+
+<p>Use common parameters to control the error handling.</p>
+
+<pre>
+$ProcessError = $null
+
+Get-Process `
+-name 'powerhell' `
+-ErrorVariable ProcessError `
+-ErrorAction   SilentlyContinue
+
+if( $ProcessError )
+{
+    write-host 'ERROR' $ProcessError.Count
+}
+else
+{
+    write-host 'OK'
+}
+</pre>
+
+
+<h3>Try-Catch-Final</h3>
+
+<p>Try-Catch-Final block.</p>
+
+<pre>
+try
+{
+
+}
+catch
+{
+
+}
+</pre>
+
+</div>
+
+
+<!-- -->
+
+
+<div class="flex-item-right">
+
+
+<h2>Variables</h2>
+
+<pre>
+$a = 42
+$b = 17.3
+$c = 'Hallo'
+$true
+$false
+$null
+</pre>
+
+<h3>Arrays</h3>
+
+<pre>
+$files = Get-ChildItem
+$files[0].Name
+$files[1].Name
+
+# create array
+$myArray = "Hello","World"
+
+# explicit syntax:
+$myArray = @("Hello","World")
+
+# distribute values back into individual variables
+$var1,$var2 = $myArray
+
+# create empty array
+$myArray = @()
+
+# multi-dimensional array
+$myMultiArray = @( (1,2,3), (40,50,60) )
+
+# return length of array
+$myArray.length
+</pre>
+
+<h3>Quotes</h3>
+
+<p>
+Single Quotes - for fix values<br>
+Double Quotes - insert content of variable into string<br>
+Escape Character is &quot;backtick&quot; or &quot;grave accent&quot;
+</p>
+
+<pre>
+$name   = 'John'
+$prompt = "Hello $name"
+
+$var = 'FooBar'
+$dbg = "`$var is $var"
+
+$head = "Column`tColumn`tColumn"
+</pre>
+
+
+<h2>Operators</h2>
+
+<h3>Comparison Operators</h3>
+
+<pre>
+-eq  Equal to
+-lt  Less than
+-gt  Greater than
+-ge  Greater than or Eqaul to
+-le  Less than or equal to
+-ne  Not equal to
+</pre>
+
+
+<h3>Logical Operators</h3>
+
+<pre>
+-not  Not
+!     Not
+-and  And
+-or   Or
+</pre>
+
+
+<h3>Grouping Expression operator</h3>
+<p>Work just as they do in mathematics, determine the order of evaluation and return the result of the expression within.</p>
+<pre>
+( )
+</pre>
+
+
+<h3>SubExpression operator</h3>
+<p>
+Use a subexpression to return specific properties of an object.
+Unlike simple parenthesis, a subexpression can contain multiple semicolon separated statements.
+</p>
+<pre>
+$( )
+
+$s="Hello"
+$t="Length: $($s.length)"
+</pre>
+
+
+<h3>Array SubExpression operator</h3>
+<p>Behaves like a normal subexpression except that the output will be an array.</p>
+<pre>
+@( )
+</pre>
+
+
+<h3>Call operator</h3>
+<pre>
+$c = "Get-ExecutionPolicy"
+& $c
+</pre>
+<p>Call a script block with or without a variable will create an additional scope.</p>
+<pre>
+$c = {Scriptblock}
+& $c
+
+& {Scriptblock}
+</pre>
+
+
+<h3>Range operator</h3>
+<pre>
+10..20
+5..25
+</pre>
+
+
+<h3>Format operator</h3>
+
+<p>Format a string expression.</p>
+
+<pre>
+$val = 3.142
+$str = "{1} is {0:n2}" -f $val, "Pi"
+</pre>
+
+
+
+<h2>Batch</h2>
+
+<p>
+Powershell scripts are text files with file extension &quot;*.ps1&quot;
+</p>
+
+<h3>Comments</h3>
+
+<pre>
+# single-line comment
+
+<#
+  multi-line comment Powershell V2+
+#>
+</pre>
+
+<h3>Run Powershell</h3>
+<p>By default the execution of scripts is blocked. Set execution policy to lower level to enable it.</p>
+<p>From within a Powershell session.</p>
+<pre>
+Set-ExecutionPolicy RemoteSigned
+</pre>
+
+<p>Start new PowerShell session.</p>
+<pre>
+powershell.exe -ExecutionPolicy RemoteSigned
+powershell.exe -ExecutionPolicy Unrestricted
+powershell.exe -ExecutionPolicy ByPass
+powershell.exe -ExecutionPolicy ByPass -file batch.ps1
+</pre>
+
+
+
+
+<h2>Regular Expressions (RegEx)</h2>
+<p>Search in text files or lists</p>
+<pre>
+Select-String test.log 'Error'
+Select-String test.log 'Error|Warning'
+Select-String *.txt 'Error'
+
+
+Where-Object ?
+Vergleichsoperator -match
+
+dir | ? Name -match '\.txt$'
+
+case-insensitive
+-match den Operator -cmatch
+Select-String -CaseSensitive
+
+Extract
+if($line -match
+'(\d{1,2})\. ?(\d{1,2})\. ?(\d{4})')
+{
+$day = [int]$matches[1]
+$month = [int]$matches[2]
+$year = [int]$matches[3]
+}
+
+
+$line -replace '(.+), (.+)', '$2 $1'
+
+</pre>
+
+<h3>Quantifiers</h3>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code>abc|def</code></td><td>abc or def</td></tr>
+<tr><td><code>^abc</code></td><td>abc at the beginning of the line</td></tr>
+<tr><td><code>abc$</code></td><td>abc at the end of the line</td></tr>
+<tr><td><code>.</code></td><td>single character</td></tr>
+<tr><td><code>a?</code></td><td>zero or one</td></tr>
+<tr><td><code>a*</code></td><td>zero or more</td></tr>
+<tr><td><code>a+</code></td><td>one or more</td></tr>
+<tr><td><code>a{n}</code></td><td>exactly n</td></tr>
+<tr><td><code>a{n,m}</code></td><td>between n and m</td></tr>
+<tr><td><code>a{n,}</code></td><td>n or more</td></tr>
+<tr><td><code>(abc)</code></td><td>group abc as expression</td></tr>
+</tbody>
+</table>
+<p>To consume as few repeats as possible append a &quot;?&quot;</p>
+
+<h3>Character Classes</h3>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code>[abc]</code></td><td>any single character in the specified set</td></tr>
+<tr><td><code>[^abc]</code></td><td>any single character not in the specified set</td></tr>
+<tr><td><code>[a-z]</code></td><td>single character in the specified range</td></tr>
+<tr><td><code>\d</code></td><td>any decimal digit</td></tr>
+<tr><td><code>\D</code></td><td>any nondigit</td></tr>
+<tr><td><code>\w</code></td><td>any word character</td></tr>
+<tr><td><code>\W</code></td><td>any nonword character</td></tr>
+<tr><td><code>\s</code></td><td>any white-space character</td></tr>
+<tr><td><code>\S</code></td><td>any non-white-space character</td></tr>
+</tbody>
+</table>
+
+</div>
+
+<!-- -->
+
+</div>
+
+</body>
+</html>
