@@ -295,7 +295,14 @@ $a.fullname.ToUpper()
 <pre>
 $myvar | Get-Member
 </pre>
+<pre>
+Get-Member -InputObject $myvar
+</pre>
 
+<p>Show type of object.</p>
+<pre>
+$myvar.GetType()
+</pre>
 
 <h2>Control Flow</h2>
 
@@ -532,12 +539,58 @@ $myMultiArray = @( (1,2,3), (40,50,60) )
 $myArray.length
 </pre>
 
+<h3>Hash Tables</h3>
+
+<p>
+Also known as Associative arrays or Dictionaries allows the storage of Keys / Values pairs.
+</p>
+
+<pre>
+# create an empty hash table
+$myHashTable = @{}
+
+# create hash table with values
+$myHashTable = @{'user'='Alex'; 'login'='alx'; 'id'='a1x'}
+
+# add item
+$myHashTable.Add('pass', 'x2a')
+$myHashTable['pass'] = 'x2a'
+
+# access item
+$myHashTable['user']
+$myHashTable.'user'
+$myHashTable.user
+$myHashTable.Item('user')
+$myHashTable.Get_Item('user')
+
+# edit
+$myHashTable['pass'] = '123'
+$myHashTable.'pass' = '456'
+$myHashTable.pass = '456'
+$myHashTable.Item('pass') = '789'
+$myHashTable.Set_Item('pass', '789')
+
+#delete
+$myHashTable.Remove('pass')
+</pre>
+
+<h3>Splatting with Hash Tables</h3>
+
+<p>
+Use Splatting to expand a hash table into a set of command parameters.
+</p>
+
+<pre>
+$params = @{year=1980; month=5; day=31}
+get-date @params
+</pre>
+
 <h3>Quotes</h3>
 
 <p>
 Single Quotes - for fix values<br>
 Double Quotes - insert content of variable into string<br>
-Escape Character is &quot;backtick&quot; or &quot;grave accent&quot;
+Escape Character is &quot;backtick&quot; or &quot;grave accent&quot; or &quot;backward apostrophe&quot;
 </p>
 
 <pre>
@@ -669,6 +722,7 @@ powershell.exe -ExecutionPolicy ByPass -file batch.ps1
 
 
 <h2>Regular Expressions (RegEx)</h2>
+
 <p>Search in text files or lists</p>
 <pre>
 Select-String test.log 'Error'
@@ -689,15 +743,35 @@ Extract
 if($line -match
 '(\d{1,2})\. ?(\d{1,2})\. ?(\d{4})')
 {
-$day = [int]$matches[1]
+$day   = [int]$matches[1]
 $month = [int]$matches[2]
-$year = [int]$matches[3]
+$year  = [int]$matches[3]
 }
 
 
 $line -replace '(.+), (.+)', '$2 $1'
 
 </pre>
+
+
+<h3>General</h3>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code>\</code></td><td>escape next character</td></tr>
+<tr><td><code>abc|def</code></td><td>abc or def</td></tr>
+<tr><td><code>^abc</code></td><td>abc at the beginning of the line</td></tr>
+<tr><td><code>abc$</code></td><td>abc at the end of the line</td></tr>
+<tr><td><code>(abc)</code></td><td>capture group</td></tr>
+<tr><td><code>(?&lt;name&gt;abc)</code></td><td>named capture group</td></tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
 
 <h3>Quantifiers</h3>
 <table>
@@ -708,20 +782,16 @@ $line -replace '(.+), (.+)', '$2 $1'
 </tr>
 </thead>
 <tbody>
-<tr><td><code>abc|def</code></td><td>abc or def</td></tr>
-<tr><td><code>^abc</code></td><td>abc at the beginning of the line</td></tr>
-<tr><td><code>abc$</code></td><td>abc at the end of the line</td></tr>
-<tr><td><code>.</code></td><td>single character</td></tr>
 <tr><td><code>a?</code></td><td>zero or one</td></tr>
 <tr><td><code>a*</code></td><td>zero or more</td></tr>
 <tr><td><code>a+</code></td><td>one or more</td></tr>
 <tr><td><code>a{n}</code></td><td>exactly n</td></tr>
 <tr><td><code>a{n,m}</code></td><td>between n and m</td></tr>
 <tr><td><code>a{n,}</code></td><td>n or more</td></tr>
-<tr><td><code>(abc)</code></td><td>group abc as expression</td></tr>
 </tbody>
 </table>
 <p>To consume as few repeats as possible append a &quot;?&quot;</p>
+
 
 <h3>Character Classes</h3>
 <table>
@@ -732,6 +802,7 @@ $line -replace '(.+), (.+)', '$2 $1'
 </tr>
 </thead>
 <tbody>
+<tr><td><code>.</code></td><td>single character</td></tr>
 <tr><td><code>[abc]</code></td><td>any single character in the specified set</td></tr>
 <tr><td><code>[^abc]</code></td><td>any single character not in the specified set</td></tr>
 <tr><td><code>[a-z]</code></td><td>single character in the specified range</td></tr>
@@ -743,6 +814,7 @@ $line -replace '(.+), (.+)', '$2 $1'
 <tr><td><code>\S</code></td><td>any non-white-space character</td></tr>
 </tbody>
 </table>
+<p>&nbsp;</p>
 
 </div>
 
