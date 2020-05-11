@@ -2,6 +2,8 @@
 #
 # get path of this script file
 #
+# https://stackoverflow.com/questions/5466329/whats-the-best-way-to-determine-the-location-of-the-current-powershell-script
+#
 #===================================================================================================
 
 #
@@ -11,22 +13,25 @@
 Set-StrictMode -Version Latest
 
 #
-#
+# get path of this script
 #
 
-if( test-path variable:global:PSScriptRoot )
+function get-script-path
 {
-    write-host -ForegroundColor Green 'PowerShell V3+'
-    $script_path = $PSScriptRoot
-}
-else
-{
-    write-host -ForegroundColor Green 'PowerShell V2'
-    $script_path = split-path -path $MyInvocation.MyCommand.Definition -parent
+    if( Test-Path variable:global:PSScriptRoot )
+    {
+        # PowerShell V3+
+        return $PSScriptRoot
+    }
+    else
+    {
+        # PowerShell V2
+        return Split-Path -Path $script:MyInvocation.MyCommand.Path -Parent
+    }
 }
 
 #
 #
 #
 
-write-host 'SCRIPT PATH :' $script_path
+Write-Host "SCRIPT PATH : $(get-script-path)"
